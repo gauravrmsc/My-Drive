@@ -14,7 +14,7 @@
     <div id="logoutDiv">
 
         <form action="/logout" method="POST">
-            <span th:text="${'Hi, ' + session.userName}">userName</span>
+            <span th:text="${user.getFirstName()}">userName</span>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <button type="submit" class="btn btn-secondary float-right">Logout</button>
         </form>
@@ -159,14 +159,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="credential:${credentials}" th:object="${credential}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <button type="button" class="btn btn-success"
+                                        th:onclick='showCredentialModal([[${credential}]])'>Edit
+                                </button>
+                                <form action="/credentials/delete" method="post"
+                                      style="display: inline-block">
+                                    <input type=hidden th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
+                                    <input type="hidden" name="credentialId"
+                                           th:value="${credential.credentialId}">
+                                    <input class="btn btn-danger" type="submit" th:value="Delete">
+                                </form>
+                                <!--                                <a class="btn btn-danger" href="/credentials/delete">Delete</a>-->
                             </td>
-                            <th scope="row">Example Credential URL</th>
-                            <td>Example Credential Username</td>
-                            <td>Example Credential Password</td>
+                            <th scope="row" th:text="*{url}">Example Credential URL</th>
+                            <td th:text="*{username}">Example Credential Username</td>
+                            <td th:text="*{password}">Example Credential Password</td>
                         </tr>
                         </tbody>
                     </table>
@@ -184,8 +194,10 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST">
+                                <form action="/credentials/add" method="POST">
                                     <input type="hidden" name="credentialId" id="credential-id">
+                                    <input type="hidden" th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">URL</label>
                                         <input type="text" name="url" class="form-control"
@@ -238,11 +250,18 @@
     }
 
     // For opening the credentials modal
-    function showCredentialModal(credentialId, url, username, password) {
-        $('#credential-id').val(credentialId ? credentialId : '');
-        $('#credential-url').val(url ? url : '');
-        $('#credential-username').val(username ? username : '');
-        $('#credential-password').val(password ? password : '');
+    // function showCredentialModal(credentialId, url, username, password) {
+    //     $('#credential-id').val(credentialId ? credentialId : '');
+    //     $('#credential-url').val(url ? url : '');
+    //     $('#credential-username').val(username ? username : '');
+    //     $('#credential-password').val(password ? password : '');
+    //     $('#credentialModal').modal('show');
+    // }
+    function showCredentialModal(credential) {
+        $('#credential-id').val(credential && credential.credentialId ? credential.credentialId : -1);
+        $('#credential-url').val(credential && credential.url ? credential.url : '');
+        $('#credential-username').val(credential && credential.username ? credential.username : '');
+        $('#credential-password').val(credential && credential.password ? credential.password : '');
         $('#credentialModal').modal('show');
     }
 </script>

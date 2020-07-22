@@ -12,8 +12,8 @@ public interface UserMapper {
   @Select("SELECT * FROM USERS")
   List<com.gauravrmsc.superduperdrive.repository.entity.UserEntity> findAll();
 
-  @Select("SELECT * FROM USERS WHERE userid = #{userid}")
-  com.gauravrmsc.superduperdrive.repository.entity.UserEntity findOne(int userid);
+  @Select("SELECT * FROM USERS WHERE userId = #{userId}")
+  com.gauravrmsc.superduperdrive.repository.entity.UserEntity findOne(long userId);
 
   @Select("SELECT * FROM USERS WHERE username = #{username}")
   com.gauravrmsc.superduperdrive.repository.entity.UserEntity findByUsername(String username);
@@ -26,7 +26,7 @@ public interface UserMapper {
   int deleteUser(String username);
 
   @Update(
-      "UPDATE USERS SET username = #{username}, password = #{password}, firstname = #{firstName}, lastname = #{lastName} WHERE userid = #{userid}")
+      "UPDATE USERS SET username = #{username}, password = #{password}, firstname = #{firstName}, lastname = #{lastName} WHERE userId = #{userId}")
   int updateUser(com.gauravrmsc.superduperdrive.repository.entity.UserEntity userEntity);
 
 }

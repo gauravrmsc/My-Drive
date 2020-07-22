@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Notes {
-  private int noteid;
+  private long noteId;
   private String notetitle;
   private String notedescription;
 }

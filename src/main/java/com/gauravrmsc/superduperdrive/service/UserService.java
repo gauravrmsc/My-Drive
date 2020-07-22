@@ -31,7 +31,7 @@ public class UserService {
     return result;
   }
 
-  public UserEntity getUser(String userId) {
-    return userRepositoryService.getUser(userId);
+  public UserEntity getUser(String username) {
+    return userRepositoryService.getUser(username);
   }
 }

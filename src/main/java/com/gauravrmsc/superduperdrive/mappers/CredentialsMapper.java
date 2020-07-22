@@ -12,21 +12,21 @@ public interface CredentialsMapper {
   @Select("SELECT * FROM CREDENTIALS")
   List<Credentials> findAll();
 
-  @Select("SELECT * FROM CREDENTIALS WHERE credentialid = #{credentialid}")
-  Credentials findOne(int credentialid);
+  @Select("SELECT * FROM CREDENTIALS WHERE credentialId = #{credentialId}")
+  Credentials findOne(long credentialId);
 
-  @Select("SELECT * FROM CREDENTIALS WHERE userid = #{userid}")
-  List<Credentials> findByUserId(int userid);
+  @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId}")
+  List<Credentials> findByUserId(long userId);
 
   @Insert(
-      "INSERT INTO CREDENTIALS (url, username, key, password, userid) VALUES (#{credential.url}, #{credential.username}, #{credential.key}, #{credential.password}, #{userid})")
-  int insertCredentials(Credentials credential, int userid);
+      "INSERT INTO CREDENTIALS (url, username, key, password, userId) VALUES (#{credential.url}, #{credential.username}, #{credential.key}, #{credential.password}, #{userId})")
+  int insertCredentials(Credentials credential, long userId);
 
-  @Delete("DELETE FROM CREDENTIALS WHERE credentialid = #{credentialid}")
-  int deleteCredentials(int credentialid);
+  @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId}")
+  int deleteCredentials(long credentialId);
 
   @Update(
-      "UPDATE CREDENTIALS SET url = #{url}, username = #{username}, key = #{key}, password = #{password} WHERE credentialid = #{credentialid}")
+      "UPDATE CREDENTIALS SET url = #{url}, username = #{username}, key = #{key}, password = #{password} WHERE credentialId = #{credentialId}")
   int updateCredentials(Credentials credential);
 
 }

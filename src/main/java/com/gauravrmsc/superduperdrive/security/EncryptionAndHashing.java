@@ -1,6 +1,5 @@
 package com.gauravrmsc.superduperdrive.security;
 
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -8,8 +7,7 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +20,7 @@ public class EncryptionAndHashing {
   static {
     try {
       cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+
     } catch (NoSuchAlgorithmException e) {
       e.printStackTrace();
     } catch (NoSuchPaddingException e) {
@@ -46,7 +45,8 @@ public class EncryptionAndHashing {
     SecretKey secretKey = new SecretKeySpec(key.getBytes(), "AES");
     cipher.init(Cipher.ENCRYPT_MODE, secretKey);
     encryptedValue = cipher.doFinal(data.getBytes("UTF-8"));
-    return Base64.getEncoder().encodeToString(encryptedValue);
+    String encodedStr = Base64.getEncoder().encodeToString(encryptedValue);
+    return encodedStr;
   }
 
   public String decryptData(String data, String key) throws Exception {
@@ -56,13 +56,19 @@ public class EncryptionAndHashing {
     byte[] decryptedValue = null;
     SecretKey secretKey = new SecretKeySpec(key.getBytes(), "AES");
     cipher.init(Cipher.DECRYPT_MODE, secretKey);
-    decryptedValue = cipher.doFinal(Base64.getDecoder().decode(data));
+    byte[] decodedData = Base64.getDecoder().decode(data);
+    decryptedValue = cipher.doFinal(decodedData);
     return new String(decryptedValue);
   }
-  public String generateKey(){
-    byte[] keyBytes = new byte[32];
-    SecureRandom secureRandom = new SecureRandom();
-    secureRandom.nextBytes(keyBytes);
-    return keyBytes.toString();
+
+  public String generateKey() {
+    //    byte[] keyBytes = new byte[32];
+    //    SecureRandom secureRandom = new SecureRandom();
+    //    secureRandom.nextBytes(keyBytes);
+    //    //return keyBytes.toString();
+    RandomStringGenerator generator =
+        new RandomStringGenerator.Builder().withinRange('a', 'z').build();
+    String randomLetters = generator.generate(32);
+    return randomLetters;
   }
 }

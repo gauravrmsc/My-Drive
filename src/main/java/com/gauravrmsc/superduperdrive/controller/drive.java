@@ -3,6 +3,7 @@ package com.gauravrmsc.superduperdrive.controller;
 import com.gauravrmsc.superduperdrive.model.NewUser;
 import com.gauravrmsc.superduperdrive.model.Result;
 import com.gauravrmsc.superduperdrive.repository.entity.UserEntity;
+import com.gauravrmsc.superduperdrive.service.CredentialsService;
 import com.gauravrmsc.superduperdrive.service.UserService;
 import java.security.Principal;
 import javax.servlet.http.HttpSession;
@@ -11,12 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @Controller
 public class drive {
   @Autowired
   UserService userService;
+  @Autowired
+  CredentialsService credentialsService;
 
   @GetMapping(value = {"/", ""})
   public String welcome() {
@@ -24,14 +28,9 @@ public class drive {
   }
 
   @GetMapping("/home")
-  public String home(Principal principal, Model model, HttpSession session) {
-    String userId = principal.getName();
-    String userName = (String) session.getAttribute("userName");
-    if (userName == null) {
-      UserEntity userEntity = userService.getUser(userId);
-      userName = userEntity.getFirstName();
-      session.setAttribute("userName", userName);
-    }
+  public String home(Principal principal, Model model) throws Exception{
+    addUserInfo(principal, model);
+    credentialsService.addCredentialsToModel(model);
     return "home";
   }
 
@@ -53,15 +52,22 @@ public class drive {
     return "signup";
   }
 
-  @GetMapping("/result")
-  public String result(Model model, @RequestParam String error, @RequestParam String success) {
-    Result result = new Result(error, success);
-    if (result == null) {
+  @RequestMapping("/error")
+  public String result(Result result, Model model) {
+    if (result.getErrorMessage() == null) {
       result = new Result();
       result.setErrorMessage("Unknown Error");
+      model.addAttribute("result", result);
     }
-    model.addAttribute("result", result);
     return "result";
   }
 
+  public void addUserInfo(Principal principal, Model model) {
+    String userId = principal.getName();
+    UserEntity userEntity = userService.getUser(userId);
+    model.addAttribute("user", userEntity);
+  }
 }
+
+
+

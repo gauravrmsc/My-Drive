@@ -2,7 +2,6 @@ package com.gauravrmsc.superduperdrive.repository.repositoryservice;
 
 import com.gauravrmsc.superduperdrive.mappers.UserMapper;
 import com.gauravrmsc.superduperdrive.repository.entity.UserEntity;
-import com.gauravrmsc.superduperdrive.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

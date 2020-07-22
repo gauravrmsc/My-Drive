@@ -72,6 +72,11 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.8</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

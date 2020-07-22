@@ -15,17 +15,17 @@ public interface FilesMapper {
   @Select("SELECT * FROM FILES")
   List<File> findAll();
 
-  @Select("SELECT * FROM FILES WHERE fileid = #{fileid}")
-  File findOne(int fileid);
+  @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")
+  File findOne(long fileId);
 
-  @Select("SELECT * FROM FILES WHERE userid = #{userid}")
-  List<File> findByUserId(int userid);
+  @Select("SELECT * FROM FILES WHERE userId = #{userId}")
+  List<File> findByUserId(long userId);
 
   @Insert(
-      "INSERT INTO FILES (filename, contenttype, filesize, filedata, userid) VALUES (#{file.filename}, #{file.contenttype}, #{file.filesize}, #{file.filedata}, #{userid})")
-  int insertFile(File file, int userid);
+      "INSERT INTO FILES (filename, contenttype, filesize, filedata, userId) VALUES (#{file.filename}, #{file.contenttype}, #{file.filesize}, #{file.filedata}, #{userId})")
+  int insertFile(File file, long userId);
 
-  @Delete("DELETE FROM FILES WHERE fileid = #{fileid}")
-  int deleteFile(int fileid);
+  @Delete("DELETE FROM FILES WHERE fileId = #{fileId}")
+  int deleteFile(long fileId);
 
 }

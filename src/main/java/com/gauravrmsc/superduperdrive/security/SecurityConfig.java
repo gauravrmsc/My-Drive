@@ -21,14 +21,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   protected void configure(HttpSecurity httpSecurity) throws Exception {
-    //httpSecurity.csrf().disable();
+//    httpSecurity.csrf().disable();
+//    httpSecurity.cors().disable();
     httpSecurity.authorizeRequests()
         .antMatchers(HttpMethod.GET, "/signup", "/css/**", "/js/**", "/h2/**", "/login", "/result",
-             "/error").permitAll().antMatchers(HttpMethod.POST, "/signup").permitAll()
+            "/error").permitAll().antMatchers(HttpMethod.POST, "/signup", "/h2/**").permitAll()
         .anyRequest().authenticated();/*.and().csrf().disable();*/
     httpSecurity.formLogin().loginPage("/login").permitAll();
     httpSecurity.formLogin().defaultSuccessUrl("/home", true);
     httpSecurity.logout().permitAll();
-
   }
 }

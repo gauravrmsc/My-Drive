@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class Credentials {
-  private int credentialid;
+  private Long credentialId;
   private String url;
   private String username;
   private String key;
