@@ -12,7 +12,7 @@
 <div class="container justify-content-center w-50 p-3"
      style="background-color: #eeeeee; margin-top: 5em;">
     <div class="form-group">
-        <label><a>Back to Login</a></label>
+        <label><a href="/login" name="loginPageLink">Back to Login</a></label>
     </div>
 
     <h1 class="display-5">Sign Up</h1>
@@ -20,8 +20,8 @@
         <input type="hidden"
                th:name="${_csrf.parameterName}"
                th:value="${_csrf.token}"/>
-        <div class="alert alert-dark" th:if="${result ne null and result.successMessage ne null}">
-            You successfully signed up! Please continue to the <a>login</a> page.
+        <div class="alert alert-dark" name = "signUpSuccessMessageBox" th:if="${result ne null and result.successMessage ne null}">
+            You successfully signed up! Please continue to the <a href="/login">login</a> page.
         </div>
         <div class="alert alert-danger" th:if="${result ne null and result.errorMessage ne null}">
             <span th:text="${result.errorMessage}">Error Message</span>
@@ -50,7 +50,7 @@
                        placeholder="Enter Password" maxlength="20" required>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <button type="submit" class="btn btn-primary" name="signupButton">Sign Up</button>
     </form>
 </div>
 </body>

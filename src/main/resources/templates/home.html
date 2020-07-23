@@ -14,6 +14,7 @@
     <div id="logoutDiv">
 
         <form action="/logout" method="POST">
+            <spa>Hi,</spa>
             <span th:text="${user.getFirstName()}">userName</span>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <button type="submit" class="btn btn-secondary float-right">Logout</button>
@@ -83,7 +84,7 @@
             </div>
             <div class="tab-pane fade" id="nav-notes" role="tabpanel"
                  aria-labelledby="nav-notes-tab">
-                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
+                <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" id = "show-note-modal-button"
                         onclick="showNoteModal()">
                     + Add a New Note
                 </button>
@@ -100,17 +101,17 @@
                         <tbody>
                         <tr th:each="note:${notes}" th:object="${note}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
+                                <button type="button" class="btn btn-success edit-note" th:onclick='showNoteModal([[${note}]])'>Edit</button>
                                 <form action="/notes/delete" method="post"
                                       style="display: inline-block">
                                     <input type=hidden th:name="${_csrf.parameterName}"
                                            th:value="${_csrf.token}">
                                     <input type="hidden" name="noteId"
                                            th:value="${note.noteId}">
-                                    <input class="btn btn-danger" type="submit" th:value="Delete">
+                                    <input class="btn btn-danger delete-note" type="submit" th:value="Delete">
                                 </form>
                             </td>
-                            <th scope="row" th:text="*{notetitle}">Example Note Title</th>
+                            <td scope="row" th:text="*{notetitle}" class="note-title-row">Example Note Title</td>
                             <td th:text="*{notedescription}">Example Note Description</td>
                         </tr>
                         </tbody>
@@ -151,7 +152,7 @@
                                 <button type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Close
                                 </button>
-                                <button type="button" class="btn btn-primary"
+                                <button type="button" class="btn btn-primary" id="save-note"
                                         onclick="$('#noteSubmit').click();">Save changes
                                 </button>
                             </div>
@@ -162,7 +163,7 @@
             <div class="tab-pane fade" id="nav-credentials" role="tabpanel"
                  aria-labelledby="nav-credentials-tab">
                 <button style="margin: 0.25em;" type="button" class="btn btn-info float-right"
-                        onclick="showCredentialModal()">
+                        onclick="showCredentialModal()" id="show-credential-modal">
                     + Add a New Credential
                 </button>
 
@@ -180,7 +181,7 @@
                         <tbody>
                         <tr th:each="credential:${credentials}" th:object="${credential}">
                             <td>
-                                <button type="button" class="btn btn-success"
+                                <button type="button" class="btn btn-success edit-credential"
                                         th:onclick='showCredentialModal([[${credential}]])'>Edit
                                 </button>
                                 <form action="/credentials/delete" method="post"
@@ -189,13 +190,19 @@
                                            th:value="${_csrf.token}">
                                     <input type="hidden" name="credentialId"
                                            th:value="${credential.credentialId}">
-                                    <input class="btn btn-danger" type="submit" th:value="Delete">
+                                    <input class="btn btn-danger delete-credential" type="submit" th:value="Delete">
                                 </form>
                                 <!--                                <a class="btn btn-danger" href="/credentials/delete">Delete</a>-->
                             </td>
-                            <th scope="row" th:text="*{url}">Example Credential URL</th>
-                            <td th:text="*{username}">Example Credential Username</td>
-                            <td th:text="*{password}">Example Credential Password</td>
+                            <td class="saved-credential-url" scope="row" th:text="*{url}">Example
+                                Credential URL
+                            </td>
+                            <td class="saved-credential-username" th:text="*{username}">Example
+                                Credential Username
+                            </td>
+                            <td class="saved-credential-password" th:text="*{password}">Example
+                                Credential Password
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -261,10 +268,10 @@
 <!--For opening the note modal-->
 <script type="text/javascript">
     // For opening the note modal
-    function showNoteModal(noteId, noteTitle, noteDescription) {
-        $('#note-id').val(noteId ? noteId : -1);
-        $('#note-title').val(noteTitle ? noteTitle : '');
-        $('#note-description').val(noteDescription ? noteDescription : '');
+    function showNoteModal(note) {
+        $('#note-id').val(note && note.noteId ? note.noteId : -1);
+        $('#note-title').val(note && note.notetitle ? note.notetitle : '');
+        $('#note-description').val(note && note.notedescription ? note.notedescription : '');
         $('#noteModal').modal('show');
     }
 

@@ -34,7 +34,7 @@ public class NotesRepositoryService {
     List<Notes> notes = findByUserId(userId);
     for (Notes note : notes) {
       if (note.getNoteId() == updatedNote.getNoteId()) {
-        repository.updateNote(note);
+        repository.updateNote(updatedNote);
         return;
       }
     }

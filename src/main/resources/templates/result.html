@@ -13,12 +13,12 @@
             <div class="alert alert-success fill-parent" th:if="${result.successMessage ne null}">
                 <h1 class="display-5" >Success</h1>
                 <span th:text="${result.successMessage}"> Success Message</span>
-                <a href="/" style="margin-left:200px;">Go to HomeScreen</a>
+                <a href="/" style="margin-left:200px;" class="goToHomeLink">Go to HomeScreen</a>
             </div>
             <div class="alert alert-danger fill-parent" th:if="${result.errorMessage ne null}">
                 <h1 class="display-5">Error</h1>
                 <span th:text="${result.errorMessage}">Error Message</span>
-                <a href="/" style="margin-left: 200px">Go to HomeScreen</a>
+                <a href="/" style="margin-left: 200px"  class="goToHomeLink">Go to HomeScreen</a>
             </div>
 <!--            <div class="alert alert-danger fill-parent">-->
 <!--                <h1 class="display-5">Error</h1>-->
