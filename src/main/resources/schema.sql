@@ -1,36 +1,35 @@
 CREATE TABLE IF NOT EXISTS USERS (
   userId BIGINT PRIMARY KEY auto_increment,
-  username VARCHAR(20),
---   salt VARCHAR,
-  password VARCHAR,
-  firstname VARCHAR(20),
-  lastname VARCHAR(20)
+  username VARCHAR(200),
+  password VARCHAR(200),
+  firstname VARCHAR(200),
+  lastname VARCHAR(200)
 );
 
 CREATE TABLE IF NOT EXISTS NOTES (
     noteId BIGINT PRIMARY KEY auto_increment,
-    notetitle VARCHAR(20),
+    notetitle VARCHAR(200),
     notedescription VARCHAR (1000),
-    userId INT,
+    userId BIGINT,
     foreign key (userId) references USERS(userId)
 );
 
 CREATE TABLE IF NOT EXISTS FILES (
     fileId BIGINT PRIMARY KEY auto_increment,
-    filename VARCHAR,
-    contenttype VARCHAR,
-    filesize VARCHAR,
-    userId INT,
+    filename VARCHAR(100),
+    contenttype VARCHAR(20),
+    filesize BIGINT,
+    userId BIGINT,
     filedata BLOB,
     foreign key (userId) references USERS(userId)
 );
 
 CREATE TABLE IF NOT EXISTS CREDENTIALS (
-    credentialid BIGINT PRIMARY KEY auto_increment,
-    url VARCHAR,
-    username VARCHAR,
-    key VARCHAR,
-    password VARCHAR,
-    userid INT,
-    foreign key (userid) references USERS(userid)
+    credentialId BIGINT PRIMARY KEY auto_increment,
+    url VARCHAR(200),
+    username VARCHAR(200),
+    key1 VARCHAR(200),
+    password VARCHAR(200),
+    userId BIGINT,
+    foreign key (userId) references USERS(userId)
 );

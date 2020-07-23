@@ -8,11 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Builder
-public class File {
+public class EncodedFile {
   private long fileId;
   private String filename;
-  private String contenttype;
-  private long filesize;
-  private byte[] filedata;
+  private String dataURL;
 }

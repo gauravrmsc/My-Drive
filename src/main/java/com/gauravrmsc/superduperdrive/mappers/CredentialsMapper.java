@@ -19,14 +19,14 @@ public interface CredentialsMapper {
   List<Credentials> findByUserId(long userId);
 
   @Insert(
-      "INSERT INTO CREDENTIALS (url, username, key, password, userId) VALUES (#{credential.url}, #{credential.username}, #{credential.key}, #{credential.password}, #{userId})")
+      "INSERT INTO CREDENTIALS (url, username, key1, password, userId) VALUES (#{credential.url}, #{credential.username}, #{credential.key}, #{credential.password}, #{userId})")
   int insertCredentials(Credentials credential, long userId);
 
   @Delete("DELETE FROM CREDENTIALS WHERE credentialId = #{credentialId}")
   int deleteCredentials(long credentialId);
 
   @Update(
-      "UPDATE CREDENTIALS SET url = #{url}, username = #{username}, key = #{key}, password = #{password} WHERE credentialId = #{credentialId}")
+      "UPDATE CREDENTIALS SET url = #{url}, username = #{username}, key1 = #{key}, password = #{password} WHERE credentialId = #{credentialId}")
   int updateCredentials(Credentials credential);
 
 }

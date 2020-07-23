@@ -4,10 +4,9 @@ import com.gauravrmsc.superduperdrive.mappers.UserMapper;
 import com.gauravrmsc.superduperdrive.model.Credentials;
 import com.gauravrmsc.superduperdrive.model.Result;
 import com.gauravrmsc.superduperdrive.repository.entity.UserEntity;
-import com.gauravrmsc.superduperdrive.repository.repositoryservice.CredentialsRepositorService;
+import com.gauravrmsc.superduperdrive.repository.repositoryservice.CredentialsRepositoryService;
 import com.gauravrmsc.superduperdrive.repository.repositoryservice.UserRepositoryService;
 import com.gauravrmsc.superduperdrive.security.EncryptionAndHashing;
-import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class CredentialsService {
   UserRepositoryService userRepositoryService;
 
   @Autowired
-  CredentialsRepositorService credentialsRepositorService;
+  CredentialsRepositoryService credentialsRepositoryService;
   @Autowired
   UserMapper userMapper;
 
@@ -43,7 +42,7 @@ public class CredentialsService {
     if (credentials.getCredentialId() != -1) {
       try{
         encryptedCredentials.setCredentialId(credentials.getCredentialId());
-        credentialsRepositorService.updateCredential(encryptedCredentials, user.getUserId());
+        credentialsRepositoryService.updateCredential(encryptedCredentials, user.getUserId());
         result.setSuccessMessage("Details Updated Successfully");
         return result;
       } catch (Exception e) {
@@ -52,7 +51,7 @@ public class CredentialsService {
       }
 
     }
-    credentialsRepositorService.addCredentails(encryptedCredentials, user.getUserId());
+    credentialsRepositoryService.addCredentails(encryptedCredentials, user.getUserId());
     result.setSuccessMessage("Credentials Added Successfully");
     return result;
   }
@@ -60,7 +59,7 @@ public class CredentialsService {
   public void addCredentialsToModel(Model model) throws Exception {
     UserEntity user = (UserEntity) model.getAttribute("user");
     long userId = user.getUserId();
-    List<Credentials> credentials = credentialsRepositorService.findByUserId(userId);
+    List<Credentials> credentials = credentialsRepositoryService.findByUserId(userId);
     decryptCredentials(credentials);
     model.addAttribute("credentials", credentials);
   }
@@ -70,7 +69,7 @@ public class CredentialsService {
     UserEntity user = userRepositoryService.getUser(username);
     long userId = user.getUserId();
     try{
-      credentialsRepositorService.deleteCredential(credentialsId, userId);
+      credentialsRepositoryService.deleteCredential(credentialsId, userId);
       result.setSuccessMessage("Credentail deleted Successfully");
     } catch (Exception e) {
       result.setErrorMessage("Credential does not exist");

@@ -4,6 +4,8 @@ import com.gauravrmsc.superduperdrive.model.NewUser;
 import com.gauravrmsc.superduperdrive.model.Result;
 import com.gauravrmsc.superduperdrive.repository.entity.UserEntity;
 import com.gauravrmsc.superduperdrive.service.CredentialsService;
+import com.gauravrmsc.superduperdrive.service.FileService;
+import com.gauravrmsc.superduperdrive.service.NotesService;
 import com.gauravrmsc.superduperdrive.service.UserService;
 import java.security.Principal;
 import javax.servlet.http.HttpSession;
@@ -19,8 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class drive {
   @Autowired
   UserService userService;
+
   @Autowired
   CredentialsService credentialsService;
+
+  @Autowired
+  NotesService notesService;
+
+  @Autowired
+  FileService fileService;
 
   @GetMapping(value = {"/", ""})
   public String welcome() {
@@ -31,6 +40,8 @@ public class drive {
   public String home(Principal principal, Model model) throws Exception{
     addUserInfo(principal, model);
     credentialsService.addCredentialsToModel(model);
+    notesService.addNotesToModel(model);
+    fileService.addFilesToModel(model);
     return "home";
   }
 

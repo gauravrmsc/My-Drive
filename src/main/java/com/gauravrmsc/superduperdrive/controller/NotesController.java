@@ -1,8 +1,10 @@
 package com.gauravrmsc.superduperdrive.controller;
 
-import com.gauravrmsc.superduperdrive.model.Credentials;
+import com.gauravrmsc.superduperdrive.model.Notes;
+import com.gauravrmsc.superduperdrive.model.Notes;
 import com.gauravrmsc.superduperdrive.model.Result;
-import com.gauravrmsc.superduperdrive.service.CredentialsService;
+import com.gauravrmsc.superduperdrive.service.NotesService;
+import com.gauravrmsc.superduperdrive.service.NotesService;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,23 +13,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/credentials")
-public class CredentialsController {
+@RequestMapping("/notes")
+public class NotesController {
 
   @Autowired
-  CredentialsService credentialsService;
+  NotesService notesService;
 
   @PostMapping("/add")
-  public String addCredentials(Credentials credentials, Model model, Principal principal)
+  public String addNote(Notes note, Model model, Principal principal)
       throws Exception {
-    Result result = credentialsService.addNewCredentials(credentials, principal.getName());
+    Result result = notesService.addORUpdateNote(note, principal.getName());
     model.addAttribute("result", result);
     return "result";
   }
 
   @PostMapping("/delete")
-  public String deleteCredentials(long credentialId, Model model, Principal principal) {
-    Result result = credentialsService.deleteCredentals(credentialId, principal.getName());
+  public String deleteNote(long noteId, Model model, Principal principal) {
+    Result result = notesService.deleteNote(noteId, principal.getName());
     model.addAttribute("result", result);
     return "result";
   }

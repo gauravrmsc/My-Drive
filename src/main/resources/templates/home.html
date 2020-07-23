@@ -35,15 +35,17 @@
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-files" role="tabpanel"
                  aria-labelledby="nav-files-tab">
-                <form action="#" enctype="multipart/form-data" method="POST">
+                <form action="/files/add" enctype="multipart/form-data" method="POST">
                     <div class="container">
                         <div class="row" style="margin: 1em;">
                             <div class="col-sm-2">
                                 <label for="fileUpload">Upload a New File:</label>
                             </div>
                             <div class="col-sm-6">
+                                <input type="hidden" th:name="${_csrf.parameterName}"
+                                       th:value="${_csrf.token}">
                                 <input type="file" class="form-control-file" id="fileUpload"
-                                       name="fileUpload">
+                                       name="file">
                             </div>
                             <div class="col-sm-4">
                                 <button type="submit" class="btn btn-dark">Upload</button>
@@ -59,13 +61,21 @@
                             <th style="width: 80%" scope="col">File Name</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody th:each="file:${files}" th:object="${file}">
                         <tr>
                             <td>
-                                <a target="_blank" class="btn btn-success">View</a>
-                                <a class="btn btn-danger">Delete</a>
+                                <a target="_blank" class="btn btn-success"
+                                   th:href="*{dataURL}" th:attr="download=${file.filename}">View</a>
+                                <form action="/files/delete" method="post"
+                                      style="display: inline-block">
+                                    <input type=hidden th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
+                                    <input type="hidden" name="fileId"
+                                           th:value="*{fileId}">
+                                    <input class="btn btn-danger" type="submit" th:value="Delete">
+                                </form>
                             </td>
-                            <th scope="row">ExampleFile.txt</th>
+                            <th scope="row" th:text="*{filename}">ExampleFile.txt</th>
                         </tr>
                         </tbody>
                     </table>
@@ -88,13 +98,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr th:each="note:${notes}" th:object="${note}">
                             <td>
                                 <button type="button" class="btn btn-success">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <form action="/notes/delete" method="post"
+                                      style="display: inline-block">
+                                    <input type=hidden th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
+                                    <input type="hidden" name="noteId"
+                                           th:value="${note.noteId}">
+                                    <input class="btn btn-danger" type="submit" th:value="Delete">
+                                </form>
                             </td>
-                            <th scope="row">Example Note Title</th>
-                            <td>Example Note Description</td>
+                            <th scope="row" th:text="*{notetitle}">Example Note Title</th>
+                            <td th:text="*{notedescription}">Example Note Description</td>
                         </tr>
                         </tbody>
                     </table>
@@ -112,16 +129,18 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="#" method="POST">
+                                <form action="/notes/add" method="POST">
+                                    <input type="hidden" th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
                                     <input type="hidden" name="noteId" id="note-id">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>
-                                        <input type="text" name="noteTitle" class="form-control"
+                                        <input type="text" name="notetitle" class="form-control"
                                                id="note-title" maxlength="20" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="note-description" class="col-form-label">Description</label>
-                                        <textarea class="form-control" name="noteDescription"
+                                        <textarea class="form-control" name="notedescription"
                                                   id="note-description" rows="5" maxlength="1000"
                                                   required></textarea>
                                     </div>
@@ -243,7 +262,7 @@
 <script type="text/javascript">
     // For opening the note modal
     function showNoteModal(noteId, noteTitle, noteDescription) {
-        $('#note-id').val(noteId ? noteId : '');
+        $('#note-id').val(noteId ? noteId : -1);
         $('#note-title').val(noteTitle ? noteTitle : '');
         $('#note-description').val(noteDescription ? noteDescription : '');
         $('#noteModal').modal('show');
